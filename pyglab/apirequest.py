@@ -1,4 +1,6 @@
 import enum
+import json
+import pyglab.exceptions.RequestError as RequestError
 import requests
 
 _defaults = {
@@ -14,7 +16,7 @@ class RequestType(Enum):
     DELETE = 4
 
 class ApiRequest:
-    request_creators = {
+    _request_creators = {
         RequestType.GET: requests.get,
         RequestType.POST: requests.post,
         RequestType.PUT: requests.put,
@@ -34,6 +36,12 @@ class ApiRequest:
         if per_page is not None:
             params['per_page'] = per_page
 
-        r = self.request_creators[request_type](url, params=params,
-                                                headers=header)
+        r = self._request_creators[request_type](url, params=params,
+                                                 headers=header)
+        content = json.loads(r.text)
+
+        if RequestError.is_error(r.status):
+            raise RequestError.error_class(r.status)(content)
+
+        return content
 
