@@ -1,4 +1,13 @@
-class RequestsError(Exception):
+class RequestErrorMeta(type):
+    def __init__(cls, name, bases, dct):
+        if hasattr(cls, 'errors'):
+            # Derived exception
+            cls.errors[cls.statuscode] = cls
+        else:
+            # Base exception
+            cls.errors = {}
+
+class RequestError(Exception, metaclass=RequestErrorMeta):
     def __init__(self, statuscode, message, body=None):
         self.statuscode = statuscode
         self.message = message
@@ -7,40 +16,47 @@ class RequestsError(Exception):
     def __str__(self):
         return "{m} [status:{s}]".format(s=self.statuscode, m=self.message)
 
-class BadRequestError(RequestsError):
+class BadRequestError(RequestError):
+    statuscode = 400
     message = "A required attribute of the API request is missing."
     def __init__(self, body=None):
-        super(BadRequestError, self).__init__(400, self.message, body)
+        super(BadRequestError, self).__init__(self.statuscode, self.message, body)
 
-class UnauthorizedError(RequestsError):
+class UnauthorizedError(RequestError):
+    statuscode = 401
     message = "The user is not authenticated, a valid user token is necessary."
     def __init__(self, body=None):
-        super(UnauthorizedError, self).__init__(401, self.message, body)
+        super(UnauthorizedError, self).__init__(self.statuscode, self.message, body)
 
-class ForbiddenError(RequestsError):
+class ForbiddenError(RequestError):
+    statuscode = 403
     message = "The request is not allowed, user lacks necessary permissions."
     def __init__(self, body=None):
-        super(ForbiddenError, self).__init__(403, self.message, body)
+        super(ForbiddenError, self).__init__(self.statuscode, self.message, body)
 
-class NotFoundError(RequestsError):
+class NotFoundError(RequestError):
+    statuscode = 404
     message = "A resource could not be accessed, i.e. it was not found."
     def __init__(self, body=None):
-        super(NotFoundError, self).__init__(404, self.message, body)
+        super(NotFoundError, self).__init__(self.statuscode, self.message, body)
 
-class MethodNotAllowedError(RequestsError):
+class MethodNotAllowedError(RequestError):
+    statuscode = 405
     message = "The request is not supported by the API."
     def __init__(self, body=None):
-        super(MethodNotAllowedError, self).__init__(405, self.message, body)
+        super(MethodNotAllowedError, self).__init__(self.statuscode, self.message, body)
 
-class ConflictError(RequestsError):
+class ConflictError(RequestError):
+    statuscode = 409
     message = "A conflicting resource (i.e. with the same name) already exists."
     def __init__(self, body=None):
-        super(ConflictError, self).__init__(409, self.message, body)
+        super(ConflictError, self).__init__(self.statuscode, self.message, body)
 
-class ServerError(RequestsError):
+class ServerError(RequestError):
+    statuscode = 500
     message = "While handling the request something went wrong on the server side."
     def __init__(self, body=None):
-        super(ServerError, self).__init__(500, self.message, body)
+        super(ServerError, self).__init__(self.statuscode, self.message, body)
 
 _errors = {
         400: BadRequestError,
@@ -55,6 +71,11 @@ _errors = {
 def is_error(statuscode):
     return statuscode in _errors
 
+def is_error2(statuscode):
+    return statuscode in RequestError.errors
+
 def get_error_class(statuscode):
     return _errors[statuscode]
 
+def get_error_class2(statuscode):
+    return RequestError.errors[statuscode]
