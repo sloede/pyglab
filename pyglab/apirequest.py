@@ -3,11 +3,6 @@ import json
 from pyglab.exceptions import RequestError
 import requests
 
-_defaults = {
-    'page': 1,
-    'per_page': 20,
-}
-
 @enum.unique
 class RequestType(enum.Enum):
     GET = 1
