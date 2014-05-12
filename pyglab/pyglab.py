@@ -4,6 +4,7 @@ _defaults = {
 
 from .apirequest import ApiRequest, RequestType
 from .users import Users
+from .projects import Projects
 
 class Pyglab(object):
     def __init__(self, url, token, api_url=_defaults['api_url']):
@@ -31,6 +32,10 @@ class Pyglab(object):
     @property
     def users(self):
         return Users(self)
+
+    @property
+    def projects(self):
+        return Projects(self)
 
     @staticmethod
     def login(username, password, email=None):
