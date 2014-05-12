@@ -7,18 +7,18 @@ class Users(object):
     def get(self, sudo=None, page=None, per_page=None):
         r = self._pyglab.request(RequestType.GET, '/users', sudo, page,
                                  per_page)
-        return u
+        return r
 
     def by_id(self, uid, sudo=None, page=None, per_page=None):
         r = self._pyglab.request(RequestType.GET, '/users/' + str(uid), sudo,
                                  page, per_page)
-        return u
+        return r
 
     def by_name(self, name, sudo=None, page=None, per_page=None):
         params = {'search': name}
         r = self._pyglab.request(RequestType.GET, '/users', params, sudo, page,
                                  per_page)
-        return u
+        return r
 
     def create(self, email, password, username, name, sudo=None, page=None,
                per_page=None, **kwargs):
@@ -27,15 +27,52 @@ class Users(object):
         params.update(kwargs)
         r = self._pyglab.request(RequestType.POST, '/users', params, sudo, page,
                                  per_page)
-        return u
+        return r
 
     def modify(self, uid, sudo=None, page=None, per_page=None, **kwargs):
         params = kwargs
         r = self._pyglab.request(RequestType.PUT, '/users/' + str(uid), params,
                                  sudo, page, per_page)
-        return u
+        return r
 
     def delete(self, uid, sudo=None, page=None, per_page=None):
         r = self._pyglab.request(RequestType.DELETE, '/users/' + str(uid),
                                  sudo=sudo, page=page, per_page=per_page)
-        return u
+        return r
+
+    def current(self, sudo=None, page=None, per_page=None):
+        r = self._pyglab.request(RequestType.GET, '/user',
+                                 sudo=sudo, page=page, per_page=per_page)
+
+    def keys(self, uid=None, sudo=None, page=None, per_page=None):
+        if uid is None:
+            url = '/user/keys'
+        else:
+            url = '/users/' + str(uid) + '/keys'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def key(self, kid, sudo=None, page=None, per_page=None):
+        r = self._pyglab.request(RequestType.GET, '/user/keys/' + str(kid),
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add_key(self, title, key, uid=None, sudo=None, page=None, per_page=None):
+        if uid is None:
+            url = '/user/keys'
+        else:
+            url = '/users/' + str(uid) + '/keys'
+        params = {'title': title, 'key': key}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def delete_key(self, kid, uid=None, sudo=None, page=None, per_page=None):
+        if uid is None:
+            url = '/user/keys/' + int(kid)
+        else:
+            url = '/users/' + str(uid) + '/keys/' + int(kid)
+        r = self._pyglab.request(RequestType.POST, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
