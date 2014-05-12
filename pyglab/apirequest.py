@@ -1,6 +1,6 @@
 import enum
 import json
-import pyglab.exceptions.RequestError as RequestError
+from pyglab.exceptions import RequestError
 import requests
 
 _defaults = {
@@ -9,7 +9,7 @@ _defaults = {
 }
 
 @enum.unique
-class RequestType(Enum):
+class RequestType(enum.Enum):
     GET = 1
     POST = 2
     PUT = 3
@@ -40,8 +40,12 @@ class ApiRequest:
                                                  headers=header)
         content = json.loads(r.text)
 
-        if RequestError.is_error(r.status):
-            raise RequestError.error_class(r.status)(content)
+        if RequestError.is_error(r.status_code):
+            raise RequestError.error_class(r.status_code)(content)
 
-        return content
+        self._content = content
+
+    @property
+    def content(self):
+        return self._content
 
