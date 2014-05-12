@@ -1,5 +1,4 @@
-import requests
-
+import pyglab.apirequest
 
 class Pyglab(object):
     def __init__(self, token):
