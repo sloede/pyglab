@@ -34,3 +34,8 @@ class Users(object):
         r = self._pyglab.request(RequestType.PUT, '/users/' + str(uid), params,
                                  sudo, page, per_page)
         return u
+
+    def delete(self, uid, sudo=None, page=None, per_page=None):
+        r = self._pyglab.request(RequestType.DELETE, '/users/' + str(uid),
+                                 sudo=sudo, page=page, per_page=per_page)
+        return u
