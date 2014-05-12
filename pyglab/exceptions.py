@@ -56,5 +56,5 @@ def is_error(statuscode):
     return statuscode in _errors
 
 def get_error_class(statuscode):
-    return errors[statuscode]
+    return _errors[statuscode]
 
