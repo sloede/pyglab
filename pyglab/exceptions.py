@@ -19,7 +19,7 @@ class RequestError(Exception, metaclass=RequestErrorMeta):
         return statuscode in cls.errors
 
     @classmethod
-    def get_error_class(cls, statuscode):
+    def error_class(cls, statuscode):
         return cls.errors.get(statuscode, None)
 
 class BadRequestError(RequestError):
