@@ -5,19 +5,19 @@ class Users(object):
         self._pyglab = pyglab
 
     def get(self, sudo=None, page=None, per_page=None):
-        r = self._pyglab.request(RequestType.GET, '/users', sudo, page,
-                                 per_page)
+        r = self._pyglab.request(RequestType.GET, '/users', sudo,
+                                 sudo=sudo, page=page, per_page=per_page)
         return r
 
     def by_id(self, uid, sudo=None, page=None, per_page=None):
-        r = self._pyglab.request(RequestType.GET, '/users/' + str(uid), sudo,
-                                 page, per_page)
+        r = self._pyglab.request(RequestType.GET, '/users/' + str(uid),
+                                 sudo=sudo, page=page, per_page=per_page)
         return r
 
     def by_name(self, name, sudo=None, page=None, per_page=None):
         params = {'search': name}
-        r = self._pyglab.request(RequestType.GET, '/users', params, sudo, page,
-                                 per_page)
+        r = self._pyglab.request(RequestType.GET, '/users', params,
+                                 sudo=sudo, page=page, per_page=per_page)
         return r
 
     def create(self, email, password, username, name, sudo=None, page=None,
@@ -25,14 +25,14 @@ class Users(object):
         params = {'email': email, 'password': password, 'username': username,
                   'name': name}
         params.update(kwargs)
-        r = self._pyglab.request(RequestType.POST, '/users', params, sudo, page,
-                                 per_page)
+        r = self._pyglab.request(RequestType.POST, '/users', params,
+                                 sudo=sudo, page=page, per_page=per_page)
         return r
 
     def modify(self, uid, sudo=None, page=None, per_page=None, **kwargs):
         params = kwargs
         r = self._pyglab.request(RequestType.PUT, '/users/' + str(uid), params,
-                                 sudo, page, per_page)
+                                 sudo=sudo, page=page, per_page=per_page)
         return r
 
     def delete(self, uid, sudo=None, page=None, per_page=None):
