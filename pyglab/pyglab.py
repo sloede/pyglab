@@ -31,3 +31,15 @@ class Pyglab(object):
     @property
     def users(self):
         return Users(self)
+
+    @staticmethod
+    def login(username, password, email=None):
+        if username is None and email is None:
+            raise ValueError('Cannot both be `None`: `username` and `email`')
+        params = {'password': password}
+        if username is not None:
+            params['login'] = username
+        else:
+            params['login'] = email
+        r = ApiRequest(RequestType.POST, '/session', params)
+        return r.content
