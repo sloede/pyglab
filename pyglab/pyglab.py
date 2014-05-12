@@ -30,10 +30,4 @@ class Pyglab(object):
 
     @property
     def users(self):
-        u = self.request(RequestType.GET, '/users')
-        return Users(u)
-
-    def users_by_name(self, name):
-        params = {'search': name}
-        u = self.request(RequestType.GET, '/users', params=params)
-        return Users(u)
+        return Users(self)
