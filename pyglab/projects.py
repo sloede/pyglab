@@ -54,6 +54,10 @@ class Projects(object):
     def members(self):
         return Members(self._pyglab)
 
+    @property
+    def hooks(self):
+        return Hooks(self._pyglab)
+
 
 class Members(objects):
     def __init__(self, pyglab):
@@ -95,6 +99,54 @@ class Members(objects):
     def remove(self, pid, uid, sudo=None, page=None, per_page=None)
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/members/' + str(uid)
+        r = self._pyglab.request(RequestType.DELETE, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+
+class Hooks(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, query=None, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/hooks'
+        params = {}
+        if query is not None:
+            params['query'] = query
+        r = self._pyglab.request(RequestType.GET, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, hid, query=None, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/hooks/' + str(hid)
+        r = self._pyglab.request(RequestType.GET, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, hook_url, sudo=None, page=None, per_page=None, **kwargs)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/hooks'
+        params = {'url': hook_url}
+        params.update(kwargs)
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def modify(self, pid, hid, hook_url, sudo=None, page=None, per_page=None,
+               **kwargs)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/hooks/' + str(hid)
+        params = {'url': hook_url}
+        params.update(kwargs)
+        r = self._pyglab.request(RequestType.PUT, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def remove(self, pid, hid, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/hooks/' + str(hid)
         r = self._pyglab.request(RequestType.DELETE, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
