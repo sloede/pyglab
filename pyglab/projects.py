@@ -67,6 +67,10 @@ class Projects(object):
     def branches(self):
         return Branches(self._pyglab)
 
+    @property
+    def snippets(self):
+        return Snippets(self._pyglab)
+
     def add_fork(self, pid, forked_from_id, sudo=None, page=None, per_page=None):
         encoded_pid = str(pid).replace('/', '%2F')
         encoded_from_id = str(forked_from_id).replace('/', '%2F')
