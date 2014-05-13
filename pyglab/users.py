@@ -20,7 +20,7 @@ class Users(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def create(self, email, password, username, name, sudo=None, page=None,
+    def add(self, email, password, username, name, sudo=None, page=None,
                per_page=None, **kwargs):
         params = {'email': email, 'password': password, 'username': username,
                   'name': name}
@@ -35,7 +35,7 @@ class Users(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def delete(self, uid, sudo=None, page=None, per_page=None):
+    def remove(self, uid, sudo=None, page=None, per_page=None):
         r = self._pyglab.request(RequestType.DELETE, '/users/' + str(uid),
                                  sudo=sudo, page=page, per_page=per_page)
         return r
@@ -68,11 +68,11 @@ class Users(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def delete_key(self, kid, uid=None, sudo=None, page=None, per_page=None):
+    def remove_key(self, kid, uid=None, sudo=None, page=None, per_page=None):
         if uid is None:
             url = '/user/keys/' + int(kid)
         else:
             url = '/users/' + str(uid) + '/keys/' + int(kid)
-        r = self._pyglab.request(RequestType.POST, url,
+        r = self._pyglab.request(RequestType.DELETE, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
