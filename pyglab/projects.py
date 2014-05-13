@@ -189,7 +189,7 @@ class Branches(objects):
 
     def add(self, pid, branch_name, ref, sudo=None, page=None, per_page=None)
         encoded_pid = str(pid).replace('/', '%2F')
-        url = '/projects/' + encoded_pid + '/branches'
+        url = '/projects/' + encoded_pid + '/repository/branches'
         params = {'branch_name': branch_name, 'ref': ref}
         r = self._pyglab.request(RequestType.POST, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
