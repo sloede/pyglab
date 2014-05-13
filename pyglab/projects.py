@@ -1,11 +1,16 @@
 from .apirequest import RequestType
+import urllib.parse
 
 class Projects(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
-    def accessible(self, sudo=None, page=None, per_page=None):
-        r = self._pyglab.request(RequestType.GET, '/projects',
+    def accessible(self, query=None, sudo=None, page=None, per_page=None):
+        if query is None:
+            url = '/projects'
+        else:
+            url = '/projects/search/' + urllib.parse.quote_plus(str(query))
+        r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
@@ -74,6 +79,13 @@ class Projects(object):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/fork'
         r = self._pyglab.request(RequestType.DELETE, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def labels(self, pid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/labels'
+        r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
