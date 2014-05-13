@@ -108,20 +108,17 @@ class Hooks(objects):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
-    def get(self, pid, query=None, sudo=None, page=None, per_page=None):
+    def get(self, pid, sudo=None, page=None, per_page=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/hooks'
-        params = {}
-        if query is not None:
-            params['query'] = query
-        r = self._pyglab.request(RequestType.GET, url, params,
+        r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def by_id(self, pid, hid, query=None, sudo=None, page=None, per_page=None):
+    def by_id(self, pid, hid, sudo=None, page=None, per_page=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/hooks/' + str(hid)
-        r = self._pyglab.request(RequestType.GET, url, params,
+        r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
