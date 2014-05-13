@@ -58,6 +58,10 @@ class Projects(object):
     def hooks(self):
         return Hooks(self._pyglab)
 
+    @property
+    def branches(self):
+        return Branches(self._pyglab)
+
 
 class Members(objects):
     def __init__(self, pyglab):
@@ -145,5 +149,48 @@ class Hooks(objects):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/hooks/' + str(hid)
         r = self._pyglab.request(RequestType.DELETE, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+
+class Branches(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/branches'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, branch, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/branches/' + str(branch)
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def protect(self, pid, branch, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/repository/branches/'
+               + str(branch) + '/protect')
+        r = self._pyglab.request(RequestType.PUT, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def unprotect(self, pid, branch, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/repository/branches/'
+               + str(branch) + '/unprotect')
+        r = self._pyglab.request(RequestType.PUT, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, branch_name, ref, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/branches'
+        params = {'branch_name': branch_name, 'ref': ref}
+        r = self._pyglab.request(RequestType.POST, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
