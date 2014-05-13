@@ -221,3 +221,53 @@ class Branches(objects):
         r = self._pyglab.request(RequestType.POST, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
+
+
+class Snippets(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/snippets'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, sid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/snippets/' + str(sid)
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, title, file_name, code, sudo=None, page=None,
+            per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/snippets'
+        params = {'title': title, 'file_name': file_name, 'code': code}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def modify(self, pid, sid, snippet_url, sudo=None, page=None, per_page=None,
+               **kwargs)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/snippets/' + str(sid)
+        r = self._pyglab.request(RequestType.PUT, url, kwargs,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def remove(self, pid, sid, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/snippets/' + str(sid)
+        r = self._pyglab.request(RequestType.DELETE, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def raw(self, pid, sid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/snippets/' + str(sid) + '/raw'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
