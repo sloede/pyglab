@@ -275,3 +275,79 @@ class Snippets(objects):
         r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
+
+
+class Repository(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def tags(self, pid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/tags'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def tree(self, pid, path=None, ref_name=None, sudo=None, page=None,
+             per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/tree'
+        params = {}
+        if path is not None:
+            params['path'] = path
+        if ref_name is not None:
+            params['ref_name'] = ref_name
+        r = self._pyglab.request(RequestType.GET, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def raw_file(self, pid, sha, filepath, sudo=None, page=None,
+             per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/tree'
+        params = {}
+        if path is not None:
+            params['path'] = path
+        if ref_name is not None:
+            params['ref_name'] = ref_name
+        r = self._pyglab.request(RequestType.GET, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, sid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/' + str(sid)
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, title, file_name, code, sudo=None, page=None,
+            per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository'
+        params = {'title': title, 'file_name': file_name, 'code': code}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def modify(self, pid, sid, repository_url, sudo=None, page=None, per_page=None,
+               **kwargs)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/' + str(sid)
+        r = self._pyglab.request(RequestType.PUT, url, kwargs,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def remove(self, pid, sid, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/' + str(sid)
+        r = self._pyglab.request(RequestType.DELETE, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def raw(self, pid, sid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/' + str(sid) + '/raw'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
