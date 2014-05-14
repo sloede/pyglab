@@ -334,6 +334,57 @@ class Repository(objects):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
+    @property
+    def files(self):
+        return Files(self._pyglab)
+
+
+class Files(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, file_path, ref, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/files'
+        params = {'file_path': file_path, 'ref': ref}
+        r = self._pyglab.request(RequestType.GET, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, file_path, branch_name, content, commit_message,
+            encoding=None, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/files'
+        params = {'file_path': file_path, 'branch_name': branch_name,
+                  'content': content, 'commit_message': commit_message}
+        if encoding is not None:
+            params['encoding'] = encoding
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def modify(self, pid, file_path, branch_name, content, commit_message,
+               encoding=None, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/files'
+        params = {'file_path': file_path, 'branch_name': branch_name,
+                  'content': content, 'commit_message': commit_message}
+        if encoding is not None:
+            params['encoding'] = encoding
+        r = self._pyglab.request(RequestType.PUT, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def remove(self, pid, file_path, branch_name, commit_message, sudo=None,
+               page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/files/' + str(sid)
+        params = {'file_path': file_path, 'branch_name': branch_name,
+                  'commit_message': commit_message}
+        r = self._pyglab.request(RequestType.DELETE, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
 
 class Milestones(objects):
     def __init__(self, pyglab):
