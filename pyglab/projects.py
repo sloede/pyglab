@@ -324,7 +324,7 @@ class Repository(objects):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def archiveb(self, pid, sha=None, sudo=None, page=None, per_page=None):
+    def archive(self, pid, sha=None, sudo=None, page=None, per_page=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/repository/archive'
         params = {}
