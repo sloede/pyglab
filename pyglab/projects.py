@@ -342,6 +342,10 @@ class Repository(objects):
     def commits(self):
         return Commits(self._pyglab)
 
+    @property
+    def issues(self):
+        return Issues(self._pyglab)
+
 
 class Files(objects):
     def __init__(self, pyglab):
@@ -416,6 +420,74 @@ class Commits(objects):
         url = ('/projects/' + encoded_pid + '/repository/commits/' + sha
                + '/diff')
         r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+
+class Issues(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, issue_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/issues/' + str(issue_id)
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, title, description=None, assignee_id=None,
+             milestone_id=None, labels=None, sudo=None, page=None,
+             per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/issues'
+        params = {'title': title}
+        if description is not None:
+            params['description'] = description
+        if assignee_id is not None:
+            params['assignee_id'] = assignee_id
+        if milestone_id is not None:
+            params['milestone_id'] = milestone_id
+        if labels is not None:
+            params['labels'] = labels
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def modify(self, pid, issue_id, title=None, description=None,
+               assignee_id=None, milestone_id=None, labels=None,
+               state_event=None, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/issues/' + str(issue_id)
+        params = {}
+        if title is not None:
+            params['title'] = title
+        if description is not None:
+            params['description'] = description
+        if assignee_id is not None:
+            params['assignee_id'] = assignee_id
+        if milestone_id is not None:
+            params['milestone_id'] = milestone_id
+        if labels is not None:
+            params['labels'] = labels
+        if state_event is not None:
+            params['state_event'] = state_event
+        r = self._pyglab.request(RequestType.PUT, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def close(self, pid, issue_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/issues/' + str(issue_id)
+        params = {'state_event': 'close'}
+        r = self._pyglab.request(RequestType.PUT, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def reopen(self, pid, issue_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/issues/' + str(issue_id)
+        params = {'state_event': 'reopen'}
+        r = self._pyglab.request(RequestType.PUT, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
