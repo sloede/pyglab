@@ -79,6 +79,10 @@ class Projects(object):
     def milestones(self):
         return Milestones(self._pyglab)
 
+    @property
+    def keys(self):
+        return Keys(self._pyglab)
+
     def add_fork(self, pid, forked_from_id, sudo=None, page=None, per_page=None):
         encoded_pid = str(pid).replace('/', '%2F')
         encoded_from_id = str(forked_from_id).replace('/', '%2F')
@@ -537,5 +541,39 @@ class Milestones(objects):
         if state_event is not None:
             params['state_event'] = state_event
         r = self._pyglab.request(RequestType.PUT, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+
+class Keys(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/keys'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, key_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/keys/' + str(key_id)
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, title, key, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/keys'
+        params = {'title': title, 'key': key}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def remove(self, pid, key_id, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/keys/' + str(key_id)
+        r = self._pyglab.request(RequestType.DELETE, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
