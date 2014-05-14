@@ -42,6 +42,10 @@ class Pyglab(object):
     def issues(self):
         return Issues(self)
 
+    @property
+    def hooks(self):
+        return Hooks(self)
+
     @staticmethod
     def login(username, password, email=None):
         if username is None and email is None:
