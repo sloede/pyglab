@@ -342,35 +342,39 @@ class Milestones(objects):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def by_id(self, pid, hid, sudo=None, page=None, per_page=None):
+    def by_id(self, pid, mid, sudo=None, page=None, per_page=None):
         encoded_pid = str(pid).replace('/', '%2F')
-        url = '/projects/' + encoded_pid + '/milestones/' + str(hid)
+        url = '/projects/' + encoded_pid + '/milestones/' + str(mid)
         r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def add(self, pid, milestone_url, sudo=None, page=None, per_page=None, **kwargs)
+    def add(self, pid, title, description=None, due_date=None, sudo=None,
+            page=None, per_page=None)
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/milestones'
-        params = {'url': milestone_url}
-        params.update(kwargs)
+        params = {'title': title}
+        if description is not None:
+            params['description'] = description
+        if due_date is not None:
+            params['due_date'] = due_date
         r = self._pyglab.request(RequestType.POST, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def modify(self, pid, hid, milestone_url, sudo=None, page=None, per_page=None,
-               **kwargs)
+    def modify(self, pid, mid, title=None, description=None, due_date=None,
+               state_event=None, sudo=None, page=None, per_page=None)
         encoded_pid = str(pid).replace('/', '%2F')
-        url = '/projects/' + encoded_pid + '/milestones/' + str(hid)
-        params = {'url': milestone_url}
-        params.update(kwargs)
+        url = '/projects/' + encoded_pid + '/milestones/' + str(mid)
+        params = {}
+        if title is not None:
+            params['title'] = title
+        if description is not None:
+            params['description'] = description
+        if due_date is not None:
+            params['due_date'] = due_date
+        if state_event is not None:
+            params['state_event'] = state_event
         r = self._pyglab.request(RequestType.PUT, url, params,
-                                 sudo=sudo, page=page, per_page=per_page)
-        return r
-
-    def remove(self, pid, hid, sudo=None, page=None, per_page=None)
-        encoded_pid = str(pid).replace('/', '%2F')
-        url = '/projects/' + encoded_pid + '/milestones/' + str(hid)
-        r = self._pyglab.request(RequestType.DELETE, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
