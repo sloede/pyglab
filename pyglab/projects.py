@@ -338,6 +338,10 @@ class Repository(objects):
     def files(self):
         return Files(self._pyglab)
 
+    @property
+    def commits(self):
+        return Commits(self._pyglab)
+
 
 class Files(objects):
     def __init__(self, pyglab):
@@ -382,6 +386,36 @@ class Files(objects):
         params = {'file_path': file_path, 'branch_name': branch_name,
                   'commit_message': commit_message}
         r = self._pyglab.request(RequestType.DELETE, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+
+class Commits(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, ref_name=None, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/commits'
+        params = {}
+        if ref_name is not None:
+            params['ref_name'] = ref_name
+        r = self._pyglab.request(RequestType.GET, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_sha(self, pid, sha, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/repository/commits/' + sha
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def diff(self, pid, sha, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/repository/commits/' + sha
+               + '/diff')
+        r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
