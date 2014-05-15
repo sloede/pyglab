@@ -1,10 +1,8 @@
-import enum
 import json
 from pyglab.exceptions import RequestError
 import requests
 
-@enum.unique
-class RequestType(enum.Enum):
+class RequestType(object):
     GET = 1
     POST = 2
     PUT = 3
