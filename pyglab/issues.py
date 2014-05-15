@@ -1,6 +1,6 @@
 from .apirequest import RequestType
 
-class Issues(objects):
+class Issues(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 

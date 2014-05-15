@@ -1,6 +1,6 @@
 from .apirequest import RequestType
 
-class Groups(objects):
+class Groups(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
@@ -40,7 +40,7 @@ class Groups(objects):
         return Members(self._pyglab)
 
 
-class Members(objects):
+class Members(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 

@@ -1,6 +1,6 @@
 from .apirequest import RequestType
 
-class Hooks(objects):
+class Hooks(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
