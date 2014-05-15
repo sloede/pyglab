@@ -83,6 +83,10 @@ class Projects(object):
     def keys(self):
         return Keys(self._pyglab)
 
+    @property
+    def notes(self):
+        return WallNotes(self._pyglab)
+
     def add_fork(self, pid, forked_from_id, sudo=None, page=None, per_page=None):
         encoded_pid = str(pid).replace('/', '%2F')
         encoded_from_id = str(forked_from_id).replace('/', '%2F')
@@ -285,6 +289,41 @@ class Snippets(objects):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/snippets/' + str(sid) + '/raw'
         r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    @property
+    def notes(self):
+        return SnippetNotes(self._pyglab)
+
+
+class SnippetNotes(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, snippet_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/snippets/' + str(snippet_id)
+                + '/notes')
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, snippet_id, note_id, sudo=None, page=None,
+              per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/snippets/' + str(snippet_id)
+               + '/notes/' + str(note_id))
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, snippet_id, body, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/snippets/' + str(snippet_id)
+               + '/notes')
+        params = {'body': body}
+        r = self._pyglab.request(RequestType.POST, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
@@ -495,6 +534,40 @@ class Issues(objects):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
+    @property
+    def notes(self):
+        return IssueNotes(self._pyglab)
+
+
+class IssueNotes(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, issue_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/issues/' + str(issue_id) + '/notes'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, issue_id, note_id, sudo=None, page=None,
+              per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/issues/' + str(issue_id)
+               + '/notes/' + str(note_id))
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, issue_id, body, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/issues/' + str(issue_id)
+               + '/notes')
+        params = {'body': body}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
 
 class Milestones(objects):
     def __init__(self, pyglab):
@@ -579,6 +652,33 @@ class Keys(objects):
         return r
 
 
+class WallNotes(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/notes'
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, note_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/notes/' + str(note_id)
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, body, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/notes'
+        params = {'body': body}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+
 class MergeRequests(objects):
     def __init__(self, pyglab):
         self._pyglab = pyglab
@@ -652,6 +752,10 @@ class MergeRequests(objects):
     def comments(self):
         return Comments(self._pyglab)
 
+    @property
+    def notes(self):
+        return MergeRequestNotes(self._pyglab)
+
 
 class Comments(objects):
     def __init__(self, pyglab):
@@ -670,6 +774,38 @@ class Comments(objects):
         url = ('/projects/' + encoded_pid + '/merge_request/'
                + str(merge_request_id) + '/comments')
         params = {'note': note}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+
+class MergeRequestNotes(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, merge_request_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id) + '/notes')
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, merge_request_id, note_id, sudo=None, page=None,
+              per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id) + '/notes/' + str(note_id))
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, merge_request_id, body, sudo=None, page=None,
+            per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id) + '/notes')
+        params = {'body': body}
         r = self._pyglab.request(RequestType.POST, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
