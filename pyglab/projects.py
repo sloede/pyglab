@@ -577,3 +577,99 @@ class Keys(objects):
         r = self._pyglab.request(RequestType.DELETE, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
+
+
+class MergeRequests(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, state=None, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/merge_request'
+        params = {}
+        if state is not None:
+            params['state'] = state
+        r = self._pyglab.request(RequestType.GET, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def by_id(self, pid, merge_request_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id))
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, source_branch, target_branch, title, assignee_id=None,
+            target_project_id=None, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = '/projects/' + encoded_pid + '/merge_request'
+        params = {'source_branch': source_branch, 'target_branch':
+                  target_branch, 'title': title}
+        if assignee_id is not None:
+            params['assignee_id'] = assignee_id
+        if target_project_id is not None:
+            params['target_project_id'] = target_project_id
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def modify(self, pid, merge_request_id, source_branch=None,
+               target_branch=None, title=None, assignee_id=None,
+               state_event=None, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id))
+        params = {}
+        if source_branch is not None:
+            params['source_branch'] = source_branch
+        if target_branch is not None:
+            params['target_branch'] = target_branch
+        if title is not None:
+            params['title'] = title
+        if assignee_id is not None:
+            params['assignee_id'] = assignee_id
+        if state_event is not None:
+            params['state_event'] = state_event
+        r = self._pyglab.request(RequestType.PUT, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def merge(self, pid, merge_request_id, merge_commit_message=None, sudo=None,
+              page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id) + '/merge')
+        params = {}
+        if merge_commit_message is not None:
+            params['merge_commit_message'] = merge_commit_message
+        r = self._pyglab.request(RequestType.PUT, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    @property
+    def comments(self):
+        return Comments(self._pyglab)
+
+
+class Comments(objects):
+    def __init__(self, pyglab):
+        self._pyglab = pyglab
+
+    def get(self, pid, merge_request_id, sudo=None, page=None, per_page=None):
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id) + '/comments')
+        r = self._pyglab.request(RequestType.GET, url,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
+
+    def add(self, pid, merge_request_id, note, sudo=None, page=None, per_page=None)
+        encoded_pid = str(pid).replace('/', '%2F')
+        url = ('/projects/' + encoded_pid + '/merge_request/'
+               + str(merge_request_id) + '/comments')
+        params = {'note': note}
+        r = self._pyglab.request(RequestType.POST, url, params,
+                                 sudo=sudo, page=page, per_page=per_page)
+        return r
