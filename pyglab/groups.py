@@ -45,41 +45,21 @@ class Members(objects):
         self._pyglab = pyglab
 
     def get(self, gid, sudo=None, page=None, per_page=None):
-        encoded_gid = str(gid).replace('/', '%2F')
-        url = '/groups/' + encoded_gid + '/members'
+        url = '/groups/' + str(gid) + '/members'
         r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def by_id(self, pid, hid, sudo=None, page=None, per_page=None):
-        encoded_pid = str(pid).replace('/', '%2F')
-        url = '/groups/' + encoded_pid + '/members/' + str(hid)
-        r = self._pyglab.request(RequestType.GET, url,
-                                 sudo=sudo, page=page, per_page=per_page)
-        return r
-
-    def add(self, pid, member_url, sudo=None, page=None, per_page=None, **kwargs)
-        encoded_pid = str(pid).replace('/', '%2F')
-        url = '/groups/' + encoded_pid + '/members'
-        params = {'url': member_url}
-        params.update(kwargs)
+    def add(self, gid, user_id, access_level, sudo=None, page=None,
+            per_page=None):
+        url = '/groups/' + str(gid) + '/members'
+        params = {'user_id': user_id, 'access_level': access_level}
         r = self._pyglab.request(RequestType.POST, url, params,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def modify(self, pid, hid, member_url, sudo=None, page=None, per_page=None,
-               **kwargs)
-        encoded_pid = str(pid).replace('/', '%2F')
-        url = '/groups/' + encoded_pid + '/members/' + str(hid)
-        params = {'url': member_url}
-        params.update(kwargs)
-        r = self._pyglab.request(RequestType.PUT, url, params,
-                                 sudo=sudo, page=page, per_page=per_page)
-        return r
-
-    def remove(self, pid, hid, sudo=None, page=None, per_page=None)
-        encoded_pid = str(pid).replace('/', '%2F')
-        url = '/groups/' + encoded_pid + '/members/' + str(hid)
+    def remove(self, gid, user_id, sudo=None, page=None, per_page=None):
+        url = '/groups/' + str(gid) + '/members/' + str(user_id)
         r = self._pyglab.request(RequestType.DELETE, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
