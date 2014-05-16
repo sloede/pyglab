@@ -29,11 +29,25 @@ location to the
 variable.
 
 
-Usage
------
+Quick start
+-----------
 
-Right now, this section has no content yet. Please refer to the source code for
-how to use it :-/
+Right now, this section has not much content yet. Please refer to the source
+code for how to use it :-/
+
+In order to query a GitLab repository, create a `Pyglab` instance as easily as
+
+    p = Pyglab(url, private_token)
+
+If you do not know the private token, you can also login with a
+username/password combination:
+
+    p = Pyglab.login(username, password)
+
+You can then use the `pyglab` instance to access the full API. For example,  to
+show the current user, execute
+
+    p.user.get()
 
 
 Disclaimer
