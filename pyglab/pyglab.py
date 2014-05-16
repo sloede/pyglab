@@ -54,13 +54,16 @@ class Pyglab(object):
         return Hooks(self)
 
     @staticmethod
-    def login(username, password, email=None):
+    def login(url, username, password, email=None,
+              api_url=_defaults['api_url']):
+        base_url = url.rstrip('/') + '/' + api_url.strip('/')
         if username is None and email is None:
             raise ValueError('Cannot both be `None`: `username` and `email`')
         params = {'password': password}
         if username is not None:
             params['login'] = username
         else:
-            params['login'] = email
-        r = ApiRequest(RequestType.POST, '/session', params)
-        return r.content
+            params['email'] = email
+        r = ApiRequest(RequestType.POST, base_url + '/session', '',
+                       params)
+        return Pyglab(url, r.content['private_token'])
