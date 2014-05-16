@@ -25,18 +25,16 @@ class Pyglab(object):
         return previous
 
     def per_page(self, per_page):
+        """Permanently set number of items per page. Returns the old value."""
         previous = self._per_page
         self._per_page = per_page
         return previous
 
-    def request(self, request_type, url, params={}, sudo=None, page=None,
-                per_page=None):
+    def request(self, request_type, url, params={}, sudo=None):
         if sudo is None and self._user is not None:
             sudo = _self.user
-        if per_page is None and self._per_page is None:
-            per_page = self._per_page
         r = ApiRequest(request_type, self._base_url + '/' + url.lstrip('/'),
-                       self._token, params, sudo, page, per_page)
+                       self._token, params, sudo)
         return r.content
 
     @property
