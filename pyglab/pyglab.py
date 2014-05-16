@@ -8,7 +8,7 @@ from .user import User
 from .projects import Projects
 from .issues import Issues
 from .groups import Groups
-from .hooks import hooks
+from .hooks import Hooks
 
 class Pyglab(object):
     def __init__(self, url, token, api_url=_defaults['api_url']):
