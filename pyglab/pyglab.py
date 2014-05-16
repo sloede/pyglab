@@ -12,7 +12,7 @@ from .hooks import Hooks
 
 class Pyglab(object):
     def __init__(self, url, token, api_url=_defaults['api_url']):
-        self._base_url = url.rstrip('/') + '/' + api_url.strip()
+        self._base_url = url.rstrip('/') + '/' + api_url.strip('/')
         self._token = token
         self._user = None
         self._per_page = None
