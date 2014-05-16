@@ -22,18 +22,18 @@ class Keys(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def by_id(self, kid, sudo=None, page=None, per_page=None):
-        r = self._pyglab.request(RequestType.GET, '/user/keys/' + str(kid),
-                                 sudo=sudo, page=page, per_page=per_page)
+    def by_id(self, kid, sudo=None):
+        url = '/user/keys/' + str(kid)
+        r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, title, key, sudo=None, page=None, per_page=None):
+    def add(self, title, key, sudo=None):
+        url = '/user/keys'
         params = {'title': title, 'key': key}
-        r = self._pyglab.request(RequestType.POST, '/user/keys', params,
-                                 sudo=sudo, page=page, per_page=per_page)
+        r = self._pyglab.request(RequestType.POST, url, params, sudo=sudo)
         return r
 
-    def remove(self, kid, sudo=None, page=None, per_page=None):
-        r = self._pyglab.request(RequestType.DELETE, '/user/keys/' + str(kid),
-                                 sudo=sudo, page=page, per_page=per_page)
+    def remove(self, kid, sudo=None):
+        url = '/user/keys/' + str(kid)
+        r = self._pyglab.request(RequestType.DELETE, url, sudo=sudo)
         return r
