@@ -1,5 +1,6 @@
 _defaults = {
     'api_url': 'api/v3',
+    'per_page': 20,
 }
 
 from .apirequest import ApiRequest, RequestType
@@ -19,9 +20,14 @@ class Pyglab(object):
 
     def sudo(self, user):
         """Permanently set a different username. Returns the old username."""
-        previous_user = self._user
+        previous = self._user
         self._user = user
-        return previous_user
+        return previous
+
+    def per_page(self, per_page):
+        previous = self._per_page
+        self._per_page = per_page
+        return previous
 
     def request(self, request_type, url, params={}, sudo=None, page=None,
                 per_page=None):
