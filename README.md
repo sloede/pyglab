@@ -5,17 +5,17 @@ A Python wrapper for the [GitLab API
 v3](http://doc.gitlab.com/ce/api/README.html).
 
 
-Requirements<a name="ref:requirements"></a>
+Requirements<a name="requirements"></a>
 ------------
 
-* Python 3
+* Python 3 (<http://www.python.org>)
 * `requests` library (<http://docs.python-requests.org/>)
 
 
 Installation
 ------------
 
-First, satisfy the [requirements](#ref:requirements). Currently, there is only
+First, satisfy the [requirements](#requirements). Currently, there is only
 the `requests` library, which you can get for Python 3 by executing
 
     pip3 install requests
@@ -36,7 +36,7 @@ Right now, this section has no content yet. Please refer to the source code for
 how to use it :-/
 
 
-Notes
------
+Disclaimer
+----------
 
 No animals were harmed during the development of this library :)
