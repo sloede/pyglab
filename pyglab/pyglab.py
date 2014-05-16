@@ -4,12 +4,15 @@ _defaults = {
 
 from .apirequest import ApiRequest, RequestType
 from .users import Users
+from .user import User
 from .projects import Projects
 from .issues import Issues
+from .groups import Groups
+from .hooks import Hooks
 
 class Pyglab(object):
     def __init__(self, url, token, api_url=_defaults['api_url']):
-        self._base_url = url.rstrip('/') + '/' + api_url.strip()
+        self._base_url = url.rstrip('/') + '/' + api_url.strip('/')
         self._token = token
         self._user = None
         self._per_page = None
@@ -35,6 +38,10 @@ class Pyglab(object):
         return Users(self)
 
     @property
+    def user(self):
+        return User(self)
+
+    @property
     def projects(self):
         return Projects(self)
 
@@ -47,13 +54,16 @@ class Pyglab(object):
         return Hooks(self)
 
     @staticmethod
-    def login(username, password, email=None):
+    def login(url, username, password, email=None,
+              api_url=_defaults['api_url']):
+        base_url = url.rstrip('/') + '/' + api_url.strip('/')
         if username is None and email is None:
             raise ValueError('Cannot both be `None`: `username` and `email`')
         params = {'password': password}
         if username is not None:
             params['login'] = username
         else:
-            params['login'] = email
-        r = ApiRequest(RequestType.POST, '/session', params)
-        return r.content
+            params['email'] = email
+        r = ApiRequest(RequestType.POST, base_url + '/session', '',
+                       params)
+        return Pyglab(url, r.content['private_token'])
