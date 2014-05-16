@@ -6,7 +6,7 @@ class Users(object):
 
     def get(self, sudo=None, page=None, per_page=None):
         url = '/users'
-        r = self._pyglab.request(RequestType.GET, url, sudo,
+        r = self._pyglab.request(RequestType.GET, url,
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
