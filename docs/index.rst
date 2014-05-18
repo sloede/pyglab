@@ -14,9 +14,6 @@ Contents:
    getting_started
 
 
-.. automodule:: pyglab
-   :members:
-
 
 Indices and tables
 ==================
