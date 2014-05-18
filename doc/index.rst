@@ -11,6 +11,11 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   getting_started
+
+
+.. automodule:: pyglab
+   :members:
 
 
 Indices and tables
