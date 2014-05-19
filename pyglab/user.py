@@ -27,7 +27,7 @@ class Keys(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, title, key, sudo=None):
+    def create(self, title, key, sudo=None):
         url = '/user/keys'
         params = {'title': title, 'key': key}
         r = self._pyglab.request(RequestType.POST, url, params, sudo=sudo)

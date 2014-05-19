@@ -18,7 +18,7 @@ class Users(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, email, password, username, name, sudo=None, **kwargs):
+    def create(self, email, password, username, name, sudo=None, **kwargs):
         params = {'email': email, 'password': password, 'username': username,
                   'name': name}
         params.update(kwargs)
@@ -52,7 +52,7 @@ class Keys(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def add(self, uid, title, key, sudo=None):
+    def create(self, uid, title, key, sudo=None):
         url = '/users/' + str(uid) + '/keys'
         params = {'title': title, 'key': key}
         r = self._pyglab.request(RequestType.POST, url, params, sudo=sudo)

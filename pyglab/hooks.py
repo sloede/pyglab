@@ -15,7 +15,7 @@ class Hooks(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, hook_url, sudo=None):
+    def create(self, hook_url, sudo=None):
         url = '/hooks'
         params = {'url': hook_url}
         r = self._pyglab.request(RequestType.POST, url, params, sudo=sudo)

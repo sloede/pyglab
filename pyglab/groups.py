@@ -15,7 +15,7 @@ class Groups(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, name, path, sudo=None):
+    def create(self, name, path, sudo=None):
         url = '/groups'
         params = {'name': name, 'path': path}
         r = self._pyglab.request(RequestType.POST, url, params, sudo=sudo)

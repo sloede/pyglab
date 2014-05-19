@@ -37,7 +37,7 @@ class Projects(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def add(self, name, uid=None, sudo=None, **kwargs):
+    def create(self, name, uid=None, sudo=None, **kwargs):
         if uid is None:
             url = '/projects'
         else:
@@ -164,7 +164,7 @@ class Hooks(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, hook_url, sudo=None, **kwargs):
+    def create(self, pid, hook_url, sudo=None, **kwargs):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/hooks'
         params = {'url': hook_url}
@@ -218,7 +218,7 @@ class Branches(object):
         r = self._pyglab.request(RequestType.PUT, url, sudo=sudo)
         return r
 
-    def add(self, pid, branch_name, ref, sudo=None):
+    def create(self, pid, branch_name, ref, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/repository/branches'
         params = {'branch_name': branch_name, 'ref': ref}
@@ -243,7 +243,7 @@ class Snippets(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, title, file_name, code, sudo=None):
+    def create(self, pid, title, file_name, code, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/snippets'
         params = {'title': title, 'file_name': file_name, 'code': code}
@@ -292,7 +292,7 @@ class SnippetNotes(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, snippet_id, body, sudo=None):
+    def create(self, pid, snippet_id, body, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = ('/projects/' + encoded_pid + '/snippets/' + str(snippet_id)
                + '/notes')
@@ -372,8 +372,8 @@ class Files(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def add(self, pid, file_path, branch_name, content, commit_message,
-            encoding=None, sudo=None):
+    def create(self, pid, file_path, branch_name, content, commit_message,
+               encoding=None, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/repository/files'
         params = {'file_path': file_path, 'branch_name': branch_name,
@@ -516,7 +516,7 @@ class IssueNotes(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, issue_id, body, sudo=None):
+    def create(self, pid, issue_id, body, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = ('/projects/' + encoded_pid + '/issues/' + str(issue_id)
                + '/notes')
@@ -542,7 +542,7 @@ class Milestones(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, title, description=None, due_date=None, sudo=None):
+    def create(self, pid, title, description=None, due_date=None, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/milestones'
         params = {'title': title}
@@ -587,7 +587,7 @@ class Keys(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, title, key, sudo=None):
+    def create(self, pid, title, key, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/keys'
         params = {'title': title, 'key': key}
@@ -618,7 +618,7 @@ class WallNotes(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, body, sudo=None):
+    def create(self, pid, body, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/notes'
         params = {'body': body}
@@ -647,8 +647,8 @@ class MergeRequests(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, source_branch, target_branch, title, assignee_id=None,
-            target_project_id=None, sudo=None):
+    def create(self, pid, source_branch, target_branch, title, assignee_id=None,
+               target_project_id=None, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = '/projects/' + encoded_pid + '/merge_request'
         params = {'source_branch': source_branch, 'target_branch':
@@ -712,7 +712,7 @@ class Comments(object):
                                  sudo=sudo, page=page, per_page=per_page)
         return r
 
-    def add(self, pid, merge_request_id, note, sudo=None):
+    def create(self, pid, merge_request_id, note, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = ('/projects/' + encoded_pid + '/merge_request/'
                + str(merge_request_id) + '/comments')
@@ -740,7 +740,7 @@ class MergeRequestNotes(object):
         r = self._pyglab.request(RequestType.GET, url, sudo=sudo)
         return r
 
-    def add(self, pid, merge_request_id, body, sudo=None):
+    def create(self, pid, merge_request_id, body, sudo=None):
         encoded_pid = str(pid).replace('/', '%2F')
         url = ('/projects/' + encoded_pid + '/merge_request/'
                + str(merge_request_id) + '/notes')
