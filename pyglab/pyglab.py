@@ -42,7 +42,7 @@ class Pyglab(object):
             r.request(request_type, full_url, params)
             return r.content
 
-        queue = r.request(request_type, full_url, params)
+        queue = r.request(request_type, full_url, params).content
         last = False
         while True:
             if len(queue) == 0:

@@ -4,9 +4,9 @@ class User(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
-    def list(self, sudo=None, page=None, per_page=None):
+    def list(self, sudo=None):
         r = self._pyglab.request(RequestType.GET, '/user',
-                                 sudo=sudo, page=page, per_page=per_page)
+                                 sudo=sudo, generator=True)
 
     @property
     def keys(self):
@@ -17,9 +17,9 @@ class Keys(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
-    def list(self, sudo=None, page=None, per_page=None):
+    def list(self, sudo=None):
         r = self._pyglab.request(RequestType.GET, '/user/keys',
-                                 sudo=sudo, page=page, per_page=per_page)
+                                 sudo=sudo, generator=True)
         return r
 
     def get(self, kid, sudo=None):

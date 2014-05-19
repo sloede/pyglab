@@ -4,10 +4,10 @@ class Groups(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
-    def list(self, sudo=None, page=None, per_page=None):
+    def list(self, sudo=None):
         url = '/groups'
         r = self._pyglab.request(RequestType.GET, url,
-                                 sudo=sudo, page=page, per_page=per_page)
+                                 sudo=sudo, generator=True)
         return r
 
     def get(self, gid, sudo=None):
@@ -40,10 +40,10 @@ class Members(object):
     def __init__(self, pyglab):
         self._pyglab = pyglab
 
-    def list(self, gid, sudo=None, page=None, per_page=None):
+    def list(self, gid, sudo=None):
         url = '/groups/' + str(gid) + '/members'
         r = self._pyglab.request(RequestType.GET, url,
-                                 sudo=sudo, page=page, per_page=per_page)
+                                 sudo=sudo, generator=True)
         return r
 
     def add(self, gid, user_id, access_level, sudo=None):
